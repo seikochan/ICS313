@@ -1,22 +1,5 @@
 (setq objects '())                      ; creates objects for the game
-(setq map '((dungeon (You are trapped in the dungeon. You need                                ;; creates a dungeon
-            to find a way to escape. There is a torch in the corner.)
-            (upstairs stairway ballroom)                                                      ; a path from the dungeon to the ballroom
-            (west tunnel cave))                                                               ; a path from the dungeon to the cave
-           (cave (You are deep inside a cave. The dirt is soft. Maybe                         ;; creates a cave
-            you can dig a hole...)
-            (east cave dungeon))                                                              ; a path from the cave to the dungeon
-           (kitchen (You are in the kitchen.)                                                 ; creates a kitchen
-            (east door ballroom)                                                              ; a path from the kitchen to the ballroom
-            (west door garden))                                                               ; a path from the kitchen to the garden
-           (garden (You are in a beautiful garden. There is a fresh water ;; creates a garden 
-            pond in front of you.)
-            (east door kitchen) ; a path from the garden to the kitchen
-            (north gate outside)) ; a path from the garden to outside
-           (ballroom (You are in the ballroom. A guard spots you. ;; creates a ballroom
-            You are a gonner.))
-           (outside (You are outside! Now is your chance to RUN away!) ; creates the outside
-            (south gate garden)))) ; a path from outside to the garden
+(setq map '())                          ; creates a map for the game 
 (setq object-locations '()) 
 (setq location 'dungeon) ; the starting location is the dungeon
 (setq allowed-commands '(look walk pickup inventory have run))
@@ -199,15 +182,20 @@
         (pushnew (list ',obj ',loc) object-locations)) ) )
 
 ; help
-;;; Macro that easily adds new locations
-; (defmacro new-location(loc &rest descr)
-;   `(cond
-;       ;; Error Checking: Does the location exist?
-;       ((assoc ',loc locations)
-;         '(The location ,loc already exist!))
-;       ;; If location does not yet exists, add new location
-;       (t
-;         (pushnew (list ',loc '(,@descr)) locations)) ) )
+;; Macro that easily adds new locations
+(defmacro new-location(loc &rest descr)
+  `(cond
+      ;; Error Checking: Does the location exist?
+      ((assoc ',loc map)
+        '(The location ,loc already exist!))
+      ;; If location does not yet exists, add new location
+      (t
+        (pushnew (list ',loc '(,@descr)) map)) ) )
+
+
+
+
+        ;((nconc (cdr (assoc ',loc map)) (list (list ',@descr))))) ) )
 
 ; ;;; Macro that easily adds new paths 
 ; (defmacro new-path(loc1 loc2 dirc1 path &optional (dirc2 nil))
@@ -239,4 +227,5 @@
 
 (load "add_actions.lisp")
 (load "add_objects.lisp")
+(load "add_locations.lisp")
 ;(game-repl)
