@@ -198,6 +198,7 @@
         (pushnew ',obj objects)
         (pushnew (list ',obj ',loc) object-locations)) ) )
 
+; help
 ;;; Macro that easily adds new locations
 ; (defmacro new-location(loc &rest descr)
 ;   `(cond
