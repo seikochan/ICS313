@@ -1,7 +1,30 @@
+;;;; Escape The Dungeon!
+;;;; Date:  04/03/14
+;;;; Course:  ICS313            Assignment:   6  
+;;;; File:    project.lisp
+;;;;
+;;;;  "In this game, you are a wizard's apprentice.  You'll explore the wizard's house.
+;;;;  Players can move between nodes by traveling along edges in either direction. Wherever 
+;;;;  the players are, they can interact with various objects."
+;;;;  We can think of this as a directed graph where nodes are locations, and edges 
+;;;;  are how we get from one node to another.
+;;;;
+;;;;  Game can handle:
+;;;;      -looking around
+;;;;      -walking to different locations
+;;;;      -picking up objects
+;;;;      -Performing actions on objects picked up
+;;;;
+;;;;  You will be able to "see":
+;;;;      -basic scenery
+;;;;      -1 or more paths to other locations
+;;;;      -objects that you can pick up & manipulate
+
+
 (setq objects '())                      ; creates objects for the game
 (setq map '())                          ; creates a map for the game 
 (setq object-locations '()) 
-(setq location 'dungeon) ; the starting location is the dungeon
+(setq location 'dungeon)                ; the starting location is the dungeon
 (setq allowed-commands '(look walk pickup inventory have run))
 
 ;;;;================================================
@@ -101,8 +124,8 @@
                  (eq ',object ',',obj) 
                  (eq location ',',place)
                  (have ',',subj))
-             ,@',rest
-             (pushnew ',command allowed-commands))    ;<--------------fix this
+              (pushnew ',command allowed-commands) 
+             ,@',rest)   
            (t '(I cannot ,',command like that.)))))
                  
 
@@ -128,7 +151,8 @@
 
 
 
-
+;;;==========================================================================
+;;;These function are used to create the "game-repl" mode
 (defun game-repl ()
     (let ((cmd (game-read)))
         (unless (eq (car cmd) 'quit)
@@ -162,11 +186,7 @@
     (fresh-line))
 
 
-
-
-
-
-
+;;;=================================================================================
 ;;; Macro that easily adds new objects
 (defmacro new-object(obj loc)
   `(cond
@@ -181,7 +201,6 @@
         (pushnew ',obj objects)
         (pushnew (list ',obj ',loc) object-locations)) ) )
 
-; help
 ;; Macro that easily adds new locations
 (defmacro new-location(loc &rest descr)
   `(cond
@@ -192,40 +211,32 @@
       (t
         (pushnew (list ',loc '(,@descr)) map)) ) )
 
-
-
-
-        ;((nconc (cdr (assoc ',loc map)) (list (list ',@descr))))) ) )
-
-; ;;; Macro that easily adds new paths 
-; (defmacro new-path(loc1 loc2 dirc1 path &optional (dirc2 nil))
-;   `(cond
-;     ;; Error Checking: Does the location1 exist?
-;     ((not(assoc ',loc1 locations))
-;       '(The location ,loc1 does not exist!))
-;     ;; Error Checking: Does the location2 exist?
-;     ((not(assoc ',loc2 locations))
-;       '(The location ,loc2 does not exist!))
-;     ;; Error Checking: Does the path between loc1 -> loc2 exist?
-;     ((assoc ',loc2 (cdr (assoc ',loc1 paths)))
-;       '(The path ,loc1 -> ,loc2 already exist!))
-;     ;; Error Checking: Does the path between loc2 -> loc1 exist and it goes 2-ways?
-;     ( (and ',dirc2 (assoc ',loc1 (cdr (assoc ',loc2 *edges*))) )
-;       '(The path ,loc2 -> ,loc1 already exist!)) 
-;     ;; There exist path(s) so create them
-;     (t
-;       ;; No matter what loc1 -> loc2 will need to be created
-;       (if (assoc ',loc1 *edges*)                                                                ; Does loc1 have an outgoing edge?
-;         (pushnew (list ',loc2 ',dirc1 ',path) (cdr (assoc ',loc1 *edges*)))                     ; If so, just add another outgoing edge
-;         (pushnew (list ',loc1 (list ',loc2 ',dirc1 ',path)) *edges*))                           ; If not, add it to the edge list
-;       ;; If it goes bothways, create a second path, loc2 -> loc1
-;       (if ',dirc2
-;         (if (assoc ',loc2 *edges*)                                                              ; Does loc2 have an outgoing edge?
-;           (pushnew (list ',loc1 ',dirc2 ',path) (cdr (assoc ',loc2 *edges*)))                   ; If so, just add another outgoing edge
-;           (pushnew (list ',loc2 (list ',loc1 ',dirc2 ',path)) *edges*)))) ) )                   ; If not, add it to the edge list
+;;; Macro that easily adds new paths 
+(defmacro new-path(loc1 loc2 dirc1 path &optional (dirc2 nil))
+  `(cond
+    ;; Error Checking: Does the location1 exist?
+    ((not(assoc ',loc1 map))
+      '(The location ,loc1 does not exist!))
+    ;; Error Checking: Does the location2 exist?
+    ((not(assoc ',loc2 map))
+      '(The location ,loc2 does not exist!))
+    ;; Error Checking: Does the path between loc1 -> loc2 exist?
+    ((assoc ',dirc1 (cddr (assoc ',loc1 map)))
+      '(The path ,loc1 -> ,loc2 already exist!))
+    ;; Error Checking: Does the path between loc2 -> loc1 exist and it goes 2-ways?
+    ( (and ',dirc2 (assoc ',dirc2 (cddr (assoc ',loc2 map))) )
+      '(The path ,loc2 -> ,loc1 already exist!)) 
+    ;; There exist path(s) so create them
+    (t
+      ;; No matter what loc1 -> loc2 will need to be created                                                               =
+      (nconc (assoc ',loc1 map) (list (list ',dirc1 ',path ',loc2))))                     ;just add another outgoing edge
+      ;; If it goes bothways, create a second path, loc2 -> loc1
+      (if ',dirc2
+          (nconc (assoc ',loc2 map) (list (list ',dirc2 ',path ',loc1)))) ) )             ; If so, just add another outgoing edge
 
 
 (load "add_actions.lisp")
-(load "add_objects.lisp")
 (load "add_locations.lisp")
+(load "add_objects.lisp")
+(load "add_paths.lisp")
 ;(game-repl)
