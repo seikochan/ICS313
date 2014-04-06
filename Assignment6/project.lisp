@@ -3,9 +3,11 @@
 ;;;; Course:  ICS313            Assignment:   6  
 ;;;; File:    project.lisp
 ;;;;
-;;;;  "In this game, you are a wizard's apprentice.  You'll explore the wizard's house.
+;;;;  "In this game, you are a prisoner caught trying to steal some flowers from the Duke's garden.  
+;;;;  You were captured and put in the dungeon.  Your goal is to successfully escape from the Duke's 
+;;;;  castle to regain your freedom. "
 ;;;;  Players can move between nodes by traveling along edges in either direction. Wherever 
-;;;;  the players are, they can interact with various objects."
+;;;;  the players are, they can interact with various objects.
 ;;;;  We can think of this as a directed graph where nodes are locations, and edges 
 ;;;;  are how we get from one node to another.
 ;;;;
@@ -120,11 +122,11 @@
 ;;; The game-action SPEL allows the user to do certain actions.
 (defspel game-action (command subj obj place &rest rest)
   `(defspel ,command (subject object)
+    (pushnew ',command allowed-commands)
     `(cond ((and (eq ',subject ',',subj)
                  (eq ',object ',',obj) 
                  (eq location ',',place)
                  (have ',',subj))
-              (pushnew ',command allowed-commands) 
              ,@',rest)   
            (t '(I cannot ,',command like that.)))))
                  
@@ -135,17 +137,17 @@
 ;;;; If the user does not have everything, then the user will escape
 ;;;; but not survive.
 (defun run ()
-  (cond ((and (eq bottle-filled 't) ; checks that the bottle is filled
-              (eq sack-made 't) ; checks that the sack is made
-              (or (have 'fruits) (have 'turkey-dinner)) ; checks that there is at least one food item in the inventory
-              (eq location 'outside)) ; checks that the user is outside
-          '(Congratulations! You have escaped!)) ; message
-        ((not (eq location 'outside)) ; location is not outside
-          '(You cannot escape yet.)) ; cannot escape
-        ((not (eq sack-made 't)) ; the sack has not been made
-          '(You do not have anything to carry your items. You lost everything ; message
+  (cond ((and (eq bottle-filled 't)                                              ; checks that the bottle is filled
+              (eq sack-made 't)                                                  ; checks that the sack is made
+              (or (have 'fruits) (have 'turkey-dinner))                          ; checks that there is at least one food item in the inventory
+              (eq location 'outside))                                            ; checks that the user is outside
+          '(Congratulations! You have escaped!))                                 ; message
+        ((not (eq location 'outside))                                            ; location is not outside
+          '(You cannot escape yet.))                                             ; cannot escape
+        ((not (eq sack-made 't))                                                 ; the sack has not been made
+          '(You do not have anything to carry your items. You lost everything    ; message
             while you were running away. You did not survive for very long.))
-        (t '(You escaped but you did not last long. You need to carry food ; message
+        (t '(You escaped but you did not last long. You need to carry food       ; message
              and water to survive you know.))))
 
 
