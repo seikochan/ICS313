@@ -28,6 +28,10 @@
 (setq object-locations '()) 
 (setq location 'dungeon)                ; the starting location is the dungeon
 (setq allowed-commands '(look walk pickup inventory have run))
+(setq intro "You had left your house early this morning looking to buy some food from the market.
+  Along the way, you say some lovely flowers by a castle.  You went over and started plucking some
+  to bring home.  Unfortunately, this garden belonged to a Duke and he seemed very upset about 
+  having others touch his garden.  He was so upset, he threw you in his dungeons to rot away!")
 
 ;;;;================================================
 ;;;; The describe-location function uses a location 
@@ -103,7 +107,7 @@
 ;;; The pickup SPEL allows the user to pick up an object
 ;;; in the current location.
 (defspel pickup (object)
-  `(pickup-object ',object))
+  `(pickup-object ,object))
 
 ;;;=======================================================
 ;;; The inventory function displays the current inventory.
@@ -241,4 +245,6 @@
 (load "add_locations.lisp")
 (load "add_objects.lisp")
 (load "add_paths.lisp")
-;(game-repl)
+(princ intro)
+(terpri)
+(game-repl)
