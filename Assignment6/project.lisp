@@ -27,7 +27,8 @@
 (setq map '())                          ; creates a map for the game 
 (setq object-locations '()) 
 (setq location 'dungeon)                ; the starting location is the dungeon
-(setq allowed-commands '(look walk pickup inventory have run))
+(setq action-commands '())              ; all the action commands, including their subj obj and loc
+(setq allowed-commands '(look walk pickup inventory have run dig light))
 (setq intro "You had left your house early this morning looking to buy some food from the market.
   Along the way, you say some lovely flowers by a castle.  You went over and started plucking some
   to bring home.  Unfortunately, this garden belonged to a Duke and he seemed very upset about 
@@ -126,10 +127,9 @@
 ;;; The game-action SPEL allows the user to do certain actions.
 (defspel game-action (command subj obj place &rest rest)
   `(defspel ,command (subject object)
-    (pushnew ',command allowed-commands)
-    `(cond ((and (eq ',subject ',',subj)
-                 (eq ',object ',',obj) 
-                 (eq location ',',place)
+    `(cond ((and (eq ,subject ', ',subj)
+                 (eq ,object ', ',obj) 
+                 (eq location ', ',place)
                  (have ',',subj))
              ,@',rest)   
            (t '(I cannot ,',command like that.)))))
@@ -189,7 +189,8 @@
 
 (defun game-print (lst)
     (princ (coerce (tweak-text (coerce (string-trim "() " (prin1-to-string lst)) 'list) t nil) 'string))
-    (fresh-line))
+    (fresh-line)
+    (terpri))
 
 
 ;;;=================================================================================
@@ -241,10 +242,13 @@
           (nconc (assoc ',loc2 map) (list (list ',dirc2 ',path ',loc1)))) ) )             ; If so, just add another outgoing edge
 
 
+(defun new-action(command subj obj loc)
+  (pushnew  (list subj obj loc) action-commands))
+
 (load "add_actions.lisp")
 (load "add_locations.lisp")
 (load "add_objects.lisp")
 (load "add_paths.lisp")
 (princ intro)
 (terpri)
-(game-repl)
+;(game-repl)
