@@ -28,11 +28,14 @@
 (setq object-locations '()) 
 (setq location 'dungeon)                ; the starting location is the dungeon
 (setq action-commands '())              ; all the action commands, including their subj obj and loc
-(setq allowed-commands '(look walk pickup inventory have run dig light))
+(setq all-commands '(look walk pickup inventory have run help?))
+(setq allowed-commands '(look walk pickup inventory have run help?))
 (setq intro "You had left your house early this morning looking to buy some food from the market.
   Along the way, you say some lovely flowers by a castle.  You went over and started plucking some
   to bring home.  Unfortunately, this garden belonged to a Duke and he seemed very upset about 
-  having others touch his garden.  He was so upset, he threw you in his dungeons to rot away!")
+  having others touch his garden.  He was so upset, he threw you in his dungeons to rot away!
+
+  You goal is to escape the dungeon!  If you need help along the way, just type 'help?'.")
 
 ;;;;================================================
 ;;;; The describe-location function uses a location 
@@ -79,11 +82,19 @@
           (describe-floor location objects object-locations)))
 
 ;;;==============================================================
+
+(defun check-commands()
+  (setq allowed-commands (copy-list all-commands))
+  (loop for x in action-commands
+    do (if (or (not (equal location (car(cdddr x)))) (not(have (cadr x))) )
+        (delete (car x) allowed-commands))))
+
+;;;==============================================================
 ;;; The walk-direction function allows movement from one location
 ;;; on the map to another.
 (defun walk-direction (direction)
   (let ((next (assoc direction (cddr (assoc location map)))))
-    (cond (next (setf location (third next)) (look))
+    (cond (next (setf location (third next)) (check-commands) (look) )
           (t '(You cannot go that way.)))))
 
 (defmacro defspel (&rest rest) 
@@ -93,7 +104,7 @@
 ;;; The walk SPEL allows movement from one location on the
 ;;; map to another.
 (defspel walk (direction)
-  `(walk-direction ',direction))
+  `(walk-direction ,direction))
 
 ;;;======================================================
 ;;; The pickup-object function allows the user to pickup 
@@ -101,6 +112,7 @@
 (defun pickup-object (object)
   (cond ((is-at object location object-locations)
          (push (list object 'body) object-locations)
+         (check-commands)
          `(You are now carrying the ,object))
          (t '(You cannot get that.))))
 
@@ -122,6 +134,11 @@
 ;;; they have a certain object.
 (defun have (object)
   (member object (inventory)))
+
+;;;====================================================
+;;; A function that will let the user find out what commands they may use
+(defun help? ()
+    (append '(Current allowed commands- ) allowed-commands))
 
 ;;;============================================================
 ;;; The game-action SPEL allows the user to do certain actions.
@@ -243,12 +260,15 @@
 
 
 (defun new-action(command subj obj loc)
-  (pushnew  (list subj obj loc) action-commands))
+  (pushnew  (list command subj obj loc) action-commands))
 
 (load "add_actions.lisp")
 (load "add_locations.lisp")
 (load "add_objects.lisp")
 (load "add_paths.lisp")
+(nconc all-commands (mapcar (lambda (n) (first n)) action-commands))
 (princ intro)
+(terpri)
+(help?)
 (terpri)
 ;(game-repl)
