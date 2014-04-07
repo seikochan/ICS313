@@ -1,4 +1,4 @@
-Script started on Thu Apr 03 23:35:47 2014
+Script started on Sun Apr 06 16:30:46 2014
 uhx01% /opt/acl60/alisp
 International Allegro CL Enterprise Edition
 6.0 [Solaris] (Sep 8, 2004 10:49)
@@ -10,59 +10,78 @@ This copy of Allegro CL is licensed to:
 ;; Optimization settings: safety 1, space 1, speed 1, debug 2.
 ;; For a complete description of all compiler switches given the
 ;; current optimization settings evaluate (EXPLAIN-COMPILER-SETTINGS).
-CL-USER(1): (setf tpl:*print-length* nil)
-NIL
-CL-USER(2): (load "project.lisp")
-; Loading /home04/h/higuchi8/project.lisp
+CL-USER(1): (load "project.lisp")
+; Loading /home04/h/higuchi8/Assignment6/Assignment6/project.lisp
+;   Loading /home04/h/higuchi8/Assignment6/Assignment6/add_actions.lisp
+;   Loading
+;      /home04/h/higuchi8/Assignment6/Assignment6/add_locations.lisp
+;   Loading /home04/h/higuchi8/Assignment6/Assignment6/add_objects.lisp
+;   Loading /home04/h/higuchi8/Assignment6/Assignment6/add_paths.lisp
+You had left your house early this morning looking to buy some food from the market.  Along the way, you say some lovely flowers by a castle.  You went over and started plucking some  to bring home.  Unfortunately, this garden belonged to a Duke and he seemed very upset about   having others touch his garden.  He was so upset, he threw you in his dungeons to rot away!
 T
-CL-USER(3): (look)
+CL-USER(2): (setf tpl:*print-length* nil)
+NIL
+CL-USER(3): +ID+
+"Jazmine Ishigami and Alyssa Higuchi"
+CL-USER(4): (look)
 (YOU ARE TRAPPED IN THE DUNGEON. YOU NEED TO FIND A WAY TO ESCAPE.
  THERE IS A TORCH IN THE CORNER. THERE IS A STAIRWAY GOING UPSTAIRS
- FROM HERE - THERE IS A TUNNEL GOING WEST FROM HERE - YOU SEE A LIGHTER
- ON THE FLOOR. YOU SEE A SHOVEL ON THE FLOOR.)
-CL-USER(4): (walk upstairs)
-(YOU ARE IN THE BALLROOM. A GUARD SPOTS YOU. YOU ARE A GONNER.)
-CL-USER(5): (setq location 'dungeon)
-DUNGEON
-CL-USER(6): (look)
-(YOU ARE TRAPPED IN THE DUNGEON. YOU NEED TO FIND A WAY TO ESCAPE.
- THERE IS A TORCH IN THE CORNER. THERE IS A STAIRWAY GOING UPSTAIRS
- FROM HERE - THERE IS A TUNNEL GOING WEST FROM HERE - YOU SEE A LIGHTER
- ON THE FLOOR. YOU SEE A SHOVEL ON THE FLOOR.)
-CL-USER(7): (pickup lighter)
+ FROM HERE - THERE IS A TUNNEL GOING WEST FROM HERE - YOU SEE A SHOVEL
+ ON THE FLOOR. YOU SEE A LIGHTER ON THE FLOOR.)
+CL-USER(5): (pickup 'lighter)
 (YOU ARE NOW CARRYING THE LIGHTER)
-CL-USER(8): (light lighter torch)
+CL-USER(6): (light 'lighter 'torch)
 (YOU LIT UP THE TORCH. A GUARD SAW A LIGHT DOWN IN THE DUNGEON AND GAVE
  YOU A WARNING. HE THEN EXTINGUISHED THE TORCH.)
-CL-USER(9): (pickup shovel)
+CL-USER(7): (walk upstairs)
+(YOU ARE IN THE BALLROOM. A GUARD SPOTS YOU. YOU ARE A GONNER.)
+CL-USER(8): (load "projet.lisp")
+; Loading /home04/h/higuchi8/Assignment6/Assignment6/project.lisp
+;   Loading /home04/h/higuchi8/Assignment6/Assignment6/add_actions.lisp
+;   Loading
+;      /home04/h/higuchi8/Assignment6/Assignment6/add_locations.lisp
+;   Loading /home04/h/higuchi8/Assignment6/Assignment6/add_objects.lisp
+;   Loading /home04/h/higuchi8/Assignment6/Assignment6/add_paths.lisp
+You had left your house early this morning looking to buy some food from the market.  Along the way, you say some lovely flowers by a castle.  You went over and started plucking some  to bring home.  Unfortunately, this garden belonged to a Duke and he seemed very upset about   having others touch his garden.  He was so upset, he threw you in his dungeons to rot away!
+T
+CL-USER(9): (pickup 'shovel)
 (YOU ARE NOW CARRYING THE SHOVEL)
 CL-USER(10): (walk west)
 (YOU ARE DEEP INSIDE A CAVE. THE DIRT IS SOFT. MAYBE YOU CAN DIG A
- HOLE... THERE IS A CAVE GOING EAST FROM HERE - YOU SEE A CLOTH ON THE
- FLOOR. YOU SEE A STICK ON THE FLOOR.)
-CL-USER(11): (pickup stick)
-(YOU ARE NOW CARRYING THE STICK)
-CL-USER(12): (pickup cloth)
-(YOU ARE NOW CARRYING THE CLOTH)
-CL-USER(13): (dig shovel hole)
+ HOLE... THERE IS A TUNNEL GOING EAST FROM HERE - YOU SEE A STICK ON
+ THE FLOOR. YOU SEE A CLOTH ON THE FLOOR.)
+CL-USER(11): (dig 'shovel 'hole)
 (YOU ARE IN THE KITCHEN. THERE IS A DOOR GOING EAST FROM HERE - THERE
  IS A DOOR GOING WEST FROM HERE - YOU SEE A TURKEY-DINNER ON THE FLOOR.)
+CL-USER(12): (walk east)
+(YOU ARE IN THE BALLROOM. A GUARD SPOTS YOU. YOU ARE A GONNER.)
+CL-USER(13): (load "project.lisp")
+; Loading /home04/h/higuchi8/Assignment6/Assignment6/project.lisp
+;   Loading /home04/h/higuchi8/Assignment6/Assignment6/add_actions.lisp
+;   Loading
+;      /home04/h/higuchi8/Assignment6/Assignment6/add_locations.lisp
+;   Loading /home04/h/higuchi8/Assignment6/Assignment6/add_objects.lisp
+;   Loading /home04/h/higuchi8/Assignment6/Assignment6/add_paths.lisp
+You had left your house early this morning looking to buy some food from the market.  Along the way, you say some lovely flowers by a castle.  You went over and started plucking some  to bring home.  Unfortunately, this garden belonged to a Duke and he seemed very upset about   having others touch his garden.  He was so upset, he threw you in his dungeons to rot away!
+T
 CL-USER(14): (walk west)
-(YOU ARE IN A BEAUTIFUL GARDEN. THERE IS A FRESH WATER POND IN FRONT OF
- YOU. THERE IS A DOOR GOING EAST FROM HERE - THERE IS A GATE GOING
- NORTH FROM HERE - YOU SEE A FRUITS ON THE FLOOR. YOU SEE A BOTTLE ON
- THE FLOOR.)
-CL-USER(15): (walk north)
-(YOU ARE OUTSIDE! NOW IS YOUR CHANCE TO RUN AWAY! THERE IS A GATE GOING
- SOUTH FROM HERE -)
-CL-USER(16): (run)
-(YOU DO NOT HAVE ANYTHING TO CARRY YOUR ITEMS. YOU LOST EVERYTHING
- WHILE YOU WERE RUNNING AWAY. YOU DID NOT SURVIVE FOR VERY LONG.)
-CL-USER(17): (setq location 'cave)
-CAVE
-CL-USER(18): (combine cloth stick)
-(YOU NOW HAVE A SACK. YOU CAN USE IT TO CARRY ITEMS.)
-CL-USER(19): (dig shovel hole)
+(YOU ARE DEEP INSIDE A CAVE. THE DIRT IS SOFT. MAYBE YOU CAN DIG A
+ HOLE... THERE IS A TUNNEL GOING EAST FROM HERE - YOU SEE A STICK ON
+ THE FLOOR. YOU SEE A CLOTH ON THE FLOOR.)
+CL-USER(15): (dig 'shovel 'hole)
+(I CANNOT DIG LIKE THAT.)
+CL-USER(16): (walk east)
+(YOU ARE TRAPPED IN THE DUNGEON. YOU NEED TO FIND A WAY TO ESCAPE.
+ THERE IS A TORCH IN THE CORNER. THERE IS A STAIRWAY GOING UPSTAIRS
+ FROM HERE - THERE IS A TUNNEL GOING WEST FROM HERE - YOU SEE A SHOVEL
+ ON THE FLOOR. YOU SEE A LIGHTER ON THE FLOOR.)
+CL-USER(17): (pickup 'shovel)
+(YOU ARE NOW CARRYING THE SHOVEL)
+CL-USER(18): (walk west)
+(YOU ARE DEEP INSIDE A CAVE. THE DIRT IS SOFT. MAYBE YOU CAN DIG A
+ HOLE... THERE IS A TUNNEL GOING EAST FROM HERE - YOU SEE A STICK ON
+ THE FLOOR. YOU SEE A CLOTH ON THE FLOOR.)
+CL-USER(19): (dig 'shovel 'hole)
 (YOU ARE IN THE KITCHEN. THERE IS A DOOR GOING EAST FROM HERE - THERE
  IS A DOOR GOING WEST FROM HERE - YOU SEE A TURKEY-DINNER ON THE FLOOR.)
 CL-USER(20): (walk west)
@@ -74,31 +93,75 @@ CL-USER(21): (walk north)
 (YOU ARE OUTSIDE! NOW IS YOUR CHANCE TO RUN AWAY! THERE IS A GATE GOING
  SOUTH FROM HERE -)
 CL-USER(22): (run)
-(YOU ESCAPED BUT YOU DID NOT LAST LONG. YOU NEED TO CARRY FOOD AND
- WATER TO SURVIVE YOU KNOW.)
-CL-USER(23): (setq location 'kitchen)
-KITCHEN
-CL-USER(24): (look)
+(YOU DO NOT HAVE ANYTHING TO CARRY YOUR ITEMS. YOU LOST EVERYTHING
+ WHILE YOU WERE RUNNING AWAY. YOU DID NOT SURVIVE FOR VERY LONG.)
+CL-USER(23): (load "project.lisp")
+; Loading /home04/h/higuchi8/Assignment6/Assignment6/project.lisp
+;   Loading /home04/h/higuchi8/Assignment6/Assignment6/add_actions.lisp
+;   Loading
+;      /home04/h/higuchi8/Assignment6/Assignment6/add_locations.lisp
+;   Loading /home04/h/higuchi8/Assignment6/Assignment6/add_objects.lisp
+;   Loading /home04/h/higuchi8/Assignment6/Assignment6/add_paths.lisp
+You had left your house early this morning looking to buy some food from the market.  Along the way, you say some lovely flowers by a castle.  You went over and started plucking some  to bring home.  Unfortunately, this garden belonged to a Duke and he seemed very upset about   having others touch his garden.  He was so upset, he threw you in his dungeons to rot away!
+T
+CL-USER(24): (pickup 'shovel)
+(YOU ARE NOW CARRYING THE SHOVEL)
+CL-USER(25): (walk west)
+(YOU ARE DEEP INSIDE A CAVE. THE DIRT IS SOFT. MAYBE YOU CAN DIG A
+ HOLE... THERE IS A TUNNEL GOING EAST FROM HERE - YOU SEE A STICK ON
+ THE FLOOR. YOU SEE A CLOTH ON THE FLOOR.)
+CL-USER(26): (pickup 'cloth)
+(YOU ARE NOW CARRYING THE CLOTH)
+CL-USER(27): (pickup 'stick)
+(YOU ARE NOW CARRYING THE STICK)
+CL-USER(28): (combine 'cloth 'stick)
+(YOU NOW HAVE A SACK. YOU CAN USE IT TO CARRY ITEMS.)
+CL-USER(29): (dig 'shovel 'hole)
 (YOU ARE IN THE KITCHEN. THERE IS A DOOR GOING EAST FROM HERE - THERE
  IS A DOOR GOING WEST FROM HERE - YOU SEE A TURKEY-DINNER ON THE FLOOR.)
-CL-USER(25): (pickup turkey-dinner)
+CL-USER(30): (pickup 'turkey-dinner)
 (YOU ARE NOW CARRYING THE TURKEY-DINNER)
-CL-USER(26): (walk west)
+CL-USER(31): (walk west)
 (YOU ARE IN A BEAUTIFUL GARDEN. THERE IS A FRESH WATER POND IN FRONT OF
  YOU. THERE IS A DOOR GOING EAST FROM HERE - THERE IS A GATE GOING
  NORTH FROM HERE - YOU SEE A FRUITS ON THE FLOOR. YOU SEE A BOTTLE ON
  THE FLOOR.)
-CL-USER(27): (pickup bottle)
-(YOU ARE NOW CARRYING THE BOTTLE)
-CL-USER(28): (fill-up bottle pond)
-(YOU NOW HAVE A BOTTLE FULL OF WATER.)
-CL-USER(29): (  walk north)
+CL-USER(32): (walk north)
 (YOU ARE OUTSIDE! NOW IS YOUR CHANCE TO RUN AWAY! THERE IS A GATE GOING
  SOUTH FROM HERE -)
-CL-USER(30): (run)
+CL-USER(33): (run)
+(YOU ESCAPED BUT YOU DID NOT LAST LONG. YOU NEED TO CARRY FOOD AND
+ WATER TO SURVIVE YOU KNOW.)
+CL-USER(34): (setq location 'kitchen)
+KITCHEN
+CL-USER(35): (look)
+(YOU ARE IN THE KITCHEN. THERE IS A DOOR GOING EAST FROM HERE - THERE
+ IS A DOOR GOING WEST FROM HERE -)
+CL-USER(36): (walk west)
+(YOU ARE IN A BEAUTIFUL GARDEN. THERE IS A FRESH WATER POND IN FRONT OF
+ YOU. THERE IS A DOOR GOING EAST FROM HERE - THERE IS A GATE GOING
+ NORTH FROM HERE - YOU SEE A FRUITS ON THE FLOOR. YOU SEE A BOTTLE ON
+ THE FLOOR.)
+CL-USER(37): (pickup 'bottle)
+(YOU ARE NOW CARRYING THE BOTTLE)
+CL-USER(38): (fill-up 'bottle 'pond)
+(YOU NOW HAVE A BOTTLE FULL OF WATER.)
+CL-USER(39): (walk north)
+(YOU ARE OUTSIDE! NOW IS YOUR CHANCE TO RUN AWAY! THERE IS A GATE GOING
+ SOUTH FROM HERE -)
+CL-USER(40): (walk south)
+(YOU ARE IN A BEAUTIFUL GARDEN. THERE IS A FRESH WATER POND IN FRONT OF
+ YOU. THERE IS A DOOR GOING EAST FROM HERE - THERE IS A GATE GOING
+ NORTH FROM HERE - YOU SEE A FRUITS ON THE FLOOR.)
+CL-USER(41): (run)
+(YOU CANNOT ESCAPE YET.)
+CL-USER(42): (walk north)
+(YOU ARE OUTSIDE! NOW IS YOUR CHANCE TO RUN AWAY! THERE IS A GATE GOING
+ SOUTH FROM HERE -)
+CL-USER(43): (run)
 (CONGRATULATIONS! YOU HAVE ESCAPED!)
-CL-USER(31): (exit)
+CL-USER(44): (exit)
 ; Exiting Lisp
 uhx01% exit
 uhx01% 
-script done on Thu Apr 03 23:40:35 2014
+script done on Sun Apr 06 16:36:46 2014
