@@ -38,6 +38,25 @@
 
   You goal is to escape the dungeon!  If you need help along the way, just type 'help?'.")
 
+;;;=============================================================================
+;;; A function that prints out the names, ICS course number, and assignment number.
+(defun ID (numCourse numAssign)
+
+  ;; check if numCourse and numAssign are positive integers
+  (cond
+    ;; Error Checking: Is the course number a valid positive integer?
+    ((or (not(integerp numCourse)) (>= 0 numCourse)  )
+      (format t "Error: Please provide a non-zero positive integer for the course number.~%"))
+    ;; Error Checking: Is the assignment number a valid positive integer?
+    ((or (not(integerp numAssign)) (>= 0 numAssign) )
+      (format t "Error: Please provide a non-zero positive integer for the assignment number.~%"))
+    ;; If so, print out my name, course number, and assignment number
+    (t
+      (format t "Name: ~S~%" +ID+)
+      (format t "Course: ICS ~S~%" numCourse)
+      (format t "Assignment # ~S~%" numAssign))
+  )NIL)
+
 ;;;;================================================
 ;;;; The describe-location function uses a location 
 ;;;; and a map to describe the location
