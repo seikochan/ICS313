@@ -2,6 +2,7 @@
 ;;;; Date:  04/03/14
 ;;;; Course:  ICS313            Assignment:   6  
 ;;;; File:    project.lisp
+(defconstant +ID+ "Jazmine Ishigami and Alyssa Higuchi")
 ;;;;
 ;;;;  "In this game, you are a prisoner caught trying to steal some flowers from the Duke's garden.  
 ;;;;  You were captured and put in the dungeon.  Your goal is to successfully escape from the Duke's 
@@ -39,49 +40,57 @@
 ;;;; and a map to describe the location
 
 (defun describe-location (location map)
+  "The describe-location function uses a location and a map to describe the location"
   (second (assoc location map)))
 
-;;;======================================================                     
-;;; The describe-path function describes the paths going                      
-;;; to and from a location                                                    
-;;; e.g. (describe-path '(west door garden))                                   
+;;;;======================================================                     
+;;;; The describe-path function describes the paths going                      
+;;;; to and from a location                                                    
+;;;; e.g. (describe-path '(west door garden))                                   
 
 (defun describe-path (path)
+  "The describe-path function describes the paths going to and from a location"
   `(there is a ,(second path) going ,(first path) from here -))
 
-;;;================================================                           
-;;; The describe-paths function describes the paths                           
-;;; going to and from a given location in the map                             
-;;; e.g. (describe-paths 'living-room map)                                     
+;;;;================================================                           
+;;;; The describe-paths function describes the paths                           
+;;;; going to and from a given location in the map                             
+;;;; e.g. (describe-paths 'living-room map)                                     
 (defun describe-paths (location map)
+  "The describe-paths function describes the paths going to and from a given location in the map"
   (apply #'append (mapcar #'describe-path (cddr (assoc location map)))))
 
-;;;============================================================
-;;;The is-at function describes the location of a given object.
+;;;;============================================================
+;;;;The is-at function describes the location of a given object.
 (defun is-at (obj loc obj-loc)
+  "The is-at function describes the location of a given object"
   (eq (second (assoc obj obj-loc)) loc))
 
-;;;================================================================
-;;; The describe-floor function describes the objects on the floor.
+;;;;================================================================
+;;;; The describe-floor function describes the objects on the floor.
 (defun describe-floor (loc objs obj-loc)
+  "The describe-floor function describes the objects on the floor"
   (apply #'append (mapcar (lambda (x)
                             `(You see a ,x on the floor.))
                           (remove-if-not (lambda (x)
                                            (is-at x loc obj-loc))
                                          objs))))
 
-;;;==========================================================
-;;; The look function gives a full description of the current
-;;; location
+;;;;==========================================================
+;;;; The look function gives a full description of the current
+;;;; location
 (defun look()
+  "The look function gives a full description of the current location"
   (append (describe-location location map)
           (describe-paths location map)
           (describe-floor location objects object-locations)))
 
-;;;==============================================================
-;;; The walk-direction function allows movement from one location
-;;; on the map to another.
+;;;;==============================================================
+;;;; The walk-direction function allows movement from one location
+;;;; on the map to another.
 (defun walk-direction (direction)
+  "The walk-direction function allows movement from one location on the map to another.
+   This function takes a direction as a parameter"
   (let ((next (assoc direction (cddr (assoc location map)))))
     (cond (next (setf location (third next)) (look))
           (t '(You cannot go that way.)))))
@@ -89,42 +98,51 @@
 (defmacro defspel (&rest rest) 
   `(defmacro ,@rest))
 
-;;;======================================================
-;;; The walk SPEL allows movement from one location on the
-;;; map to another.
+;;;;======================================================
+;;;; The walk SPEL allows movement from one location on the
+;;;; map to another.
 (defspel walk (direction)
+  "The walk SPEL allows movement from one location on the map to another.
+   This SPEL takes a direction as a parameter"
   `(walk-direction ',direction))
 
-;;;======================================================
-;;; The pickup-object function allows the user to pickup 
-;;; an object in the current location.
+;;;;======================================================
+;;;; The pickup-object function allows the user to pickup 
+;;;; an object in the current location.
 (defun pickup-object (object)
+  "The pickup-object function allows the user to pickup an object in the current location.
+   This function takes an object as a parameter"
   (cond ((is-at object location object-locations)
          (push (list object 'body) object-locations)
          `(You are now carrying the ,object))
          (t '(You cannot get that.))))
 
-;;;=====================================================
-;;; The pickup SPEL allows the user to pick up an object
-;;; in the current location.
+;;;;=====================================================
+;;;; The pickup SPEL allows the user to pick up an object
+;;;; in the current location.
 (defspel pickup (object)
+  "The pickup SPEL allows the user to pick up an object in the current location.
+   This SPEL takes an object as a parameter"
   `(pickup-object ,object))
 
-;;;=======================================================
-;;; The inventory function displays the current inventory.
+;;;;=======================================================
+;;;; The inventory function displays the current inventory.
 (defun inventory ()
+  "The inventory function takes no parameters and displays the current inventory"
   (remove-if-not (lambda (x)
                   (is-at x 'body object-locations))
                 objects))
 
-;;;=================================================
-;;; The have function tells the user whether or not
-;;; they have a certain object.
+;;;;=================================================
+;;;; The have function tells the user whether or not
+;;;; they have a certain object.
 (defun have (object)
+  "The have function tells the user whether or not they have a certain object.
+   It takes an object as a parameter"
   (member object (inventory)))
 
-;;;============================================================
-;;; The game-action SPEL allows the user to do certain actions.
+;;;;============================================================
+;;;; The game-action SPEL allows the user to do certain actions.
 (defspel game-action (command subj obj place &rest rest)
   `(defspel ,command (subject object)
     `(cond ((and (eq ,subject ', ',subj)
@@ -141,6 +159,8 @@
 ;;;; If the user does not have everything, then the user will escape
 ;;;; but not survive.
 (defun run ()
+  "The run function allows the user to run away and possibly escape the dungeon.
+   This function takes no parameters"
   (cond ((and (eq bottle-filled 't)                                              ; checks that the bottle is filled
               (eq sack-made 't)                                                  ; checks that the sack is made
               (or (have 'fruits) (have 'turkey-dinner))                          ; checks that there is at least one food item in the inventory
@@ -158,7 +178,7 @@
 
 
 ;;;==========================================================================
-;;;These function are used to create the "game-repl" mode
+;;;These functions are used to create the "game-repl" mode
 (defun game-repl ()
     (let ((cmd (game-read)))
         (unless (eq (car cmd) 'quit)
