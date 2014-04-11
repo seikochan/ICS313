@@ -1,0 +1,26 @@
+USER'S GUIDE
+--------------------------------------------------------
+
+Getting Started:
+Download all files (project.lisp, add_objects.lisp, add_locations.lisp, add_paths.lisp, add_actions.lisp) to a single directory.
+Navigate to above directory in the terminal.
+Load the "project.lisp" in whichever Lisp environment (ie. Clisp, Allegro, etc).
+
+
+Description:
+You had left your house early this morning looking to buy some food from the market.  Along the way, you say some lovely flowers by a castle.  You went over and started plucking some to bring home.  Unfortunately, this garden belonged to a Duke and he seemed very upset about having others touch his garden.  He was so upset, he threw you in his dungeons to rot away!
+
+In this game, you are a prisoner caught trying to steal some flowers from the Duke's garden.  You were captured and put in the dungeon.  Your goal is to successfully escape from the Duke's 
+castle to regain your freedom.  If you need help along the way, just type 'help?'.
+
+
+Strategy Tips:
+-If you have no idea what to do next, try typing 'help?', and it will provide you with a list of currently availiable commands. If you see a new command, try it out!
+
+-If you don't really know how to use a specific action command, type 'help commandName'.  It will tell you what parameters it takes.
+
+-Don't be afraid to explore and pickup different things.
+
+-If you are not sure how to use a function, use 'quit' to get out of game-repl mode, then use the documentation function to view the function's documentation string.
+	ie.    (documentation 'functionName 'function)  ->   (documentation 'run 'function)
+

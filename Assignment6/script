@@ -1,10 +1,113 @@
-[26]> +ID+
-"Jasmine Ishigami and Alyssa Higuchi"
+[94]> (ID 313 6)
+Name: "Jasmine Ishigami and Alyssa Higuchi"
+Course: ICS 313
+Assignment # 6
+NIL
+
+
+===================== DEMO HELP FUNCTIONALITY =============================
+;;;;; can use 'help?', 'help more', and 'help cmd'
+[94]> (load "EscapeTheDungeon.lisp")
+;;  Loading file EscapeTheDungeon.lisp ...
+WARNING: (DEFCONSTANT +ID+ "Jasmine Ishigami and Alyssa Higuchi")
+         redefines the constant +ID+. Its old value was visually similar
+         though. Set *SUPPRESS-SIMILAR-CONSTANT-REDEFINITION-WARNING* to
+         avoid this warning.
+;;   Loading file add_actions.lisp ...
+;;   Loaded file add_actions.lisp
+;;   Loading file add_locations.lisp ...
+;;   Loaded file add_locations.lisp
+;;   Loading file add_objects.lisp ...
+;;   Loaded file add_objects.lisp
+;;   Loading file add_paths.lisp ...
+;;   Loaded file add_paths.lisp
+You had left your house early this morning looking to buy some food from the market.
+  Along the way, you say some lovely flowers by a castle.  You went over and started plucking some
+  to bring home.  Unfortunately, this garden belonged to a Duke and he seemed very upset about 
+  having others touch his garden.  He was so upset, he threw you in his dungeons to rot away!
+
+  You goal is to escape the dungeon!  If you need help along the way, just type 'help?'.
+  If you want more help with commands type 'help more'.
+
+help?
+Current allowed commands- look walk pickup inventory have run help?
+ help
+
+help more
+Provided Commands with Parameters: 
+ look - no parameters (ie. 'look'
+ walk - a direction (ie. 'walk west')
+ pickup - an object (ie. 'pickup lighter')
+ inventory - no parameters (ie. 'inventory')
+ have - an object (ie. 'have lighter')
+ run - no parameters (ie. 'run')
+ help? - no parameters (ie. 'help?')
+ help - more or a command (ie. 'help more' or 'help dig')
+
+look
+You are trapped in the dungeon. You need to find a way to escape. There
+ is a torch in the corner. There is a stairway going upstairs from here -
+ there is a tunnel going west from here - you see a shovel on the floor.
+ you see a lighter on the floor.
+
+pickup lighter
+You are now carrying the lighter
+
+help?
+Current allowed commands- look walk pickup inventory have run help? Help
+ light
+
+help light
+ light - an object to user to light with, an item to light
+
+light lighter torch
+You lit up the torch. A guard saw a light down in the dungeon and gave
+ you a warning. He then extinguished the torch.
+
+pickup shovel
+You are now carrying the shovel
+
+walk west
+You are deep inside a cave. The dirt is soft. Maybe you can dig a
+ hole... There is a tunnel going east from here - you see a stick on the
+ floor. You see a cloth on the floor.
+
+pickup stick
+You are now carrying the stick
+
+pickup cloth
+You are now carrying the cloth
+
+help?
+Current allowed commands- look walk pickup inventory have run help? Help
+ dig combine
+
+help combine
+ combine - object1 to combine, object2 to combine
+
+combine cloth shovel
+I cannot combine like that.
+
+combine cloth stick
+You now have a sack. You can use it to carry items.
+
+help?
+Current allowed commands- look walk pickup inventory have run help? Help
+ dig combine
+
+help dig
+ dig - an object use to dig, a specification of what to dig
+
+dig shovel hole
+You are in the kitchen. There is a door going east from here - there is
+ a door going west from here - you see a turkey-dinner on the floor.
+
+
 
 ===================== DEMO LOSING GAME 1 =============================
 
-[28]> (load "project.lisp")
-;; Loading file project.lisp ...
+[28]> (load "EscapeTheDungeon.lisp")
+;; Loading file EscapeTheDungeon.lisp ...
 WARNING: (DEFCONSTANT +ID+ "Jasmine Ishigami and Alyssa Higuchi") redefines the constant +ID+. Its old value was visually similar though. Set
          *SUPPRESS-SIMILAR-CONSTANT-REDEFINITION-WARNING* to avoid this warning.
 ;;  Loading file add_actions.lisp ...
@@ -21,6 +124,8 @@ You had left your house early this morning looking to buy some food from the mar
   having others touch his garden.  He was so upset, he threw you in his dungeons to rot away!
 
   You goal is to escape the dungeon!  If you need help along the way, just type 'help?'.
+  If you want more help with commands type 'help more'.
+
 
 help?
 Current allowed commands- look walk pickup inventory have run help?
@@ -42,8 +147,8 @@ You are in the ballroom. A guard spots you. You are a gonner.
 
 ========================== DEMO LOSING GAME 2 ========================
 
-[29]> (load "project.lisp")
-;; Loading file project.lisp ...
+[29]> (load "EscapeTheDungeon.lisp")
+;; Loading file EscapeTheDungeon.lisp ...
 WARNING: (DEFCONSTANT +ID+ "Jasmine Ishigami and Alyssa Higuchi") redefines the constant +ID+. Its old value was visually similar though. Set
          *SUPPRESS-SIMILAR-CONSTANT-REDEFINITION-WARNING* to avoid this warning.
 ;;  Loading file add_actions.lisp ...
@@ -60,6 +165,7 @@ You had left your house early this morning looking to buy some food from the mar
   having others touch his garden.  He was so upset, he threw you in his dungeons to rot away!
 
   You goal is to escape the dungeon!  If you need help along the way, just type 'help?'.
+  If you want more help with commands type 'help more'.
 
 look
 You are trapped in the dungeon. You need to find a way to escape. There is a torch in the corner. There is a stairway going upstairs from here -
@@ -85,8 +191,8 @@ walk east
 You are in the ballroom. A guard spots you. You are a gonner.
 
 ===================== DEMO LOSE GAME 3 ==============================
-[48]> (load "project.lisp")
-;; Loading file project.lisp ...
+[48]> (load "EscapeTheDungeon.lisp")
+;; Loading file EscapeTheDungeon.lisp ...
 WARNING: (DEFCONSTANT +ID+ "Jasmine Ishigami and Alyssa Higuchi") redefines the constant +ID+. Its old value was visually similar though. Set
          *SUPPRESS-SIMILAR-CONSTANT-REDEFINITION-WARNING* to avoid this warning.
 ;;  Loading file add_actions.lisp ...
@@ -103,6 +209,7 @@ You had left your house early this morning looking to buy some food from the mar
   having others touch his garden.  He was so upset, he threw you in his dungeons to rot away!
 
   You goal is to escape the dungeon!  If you need help along the way, just type 'help?'.
+  If you want more help with commands type 'help more'.
 
 look
 You are trapped in the dungeon. You need to find a way to escape. There is a torch in the corner. There is a stairway going upstairs from here -
@@ -148,8 +255,8 @@ You do not have anything to carry your items. You lost everything while you were
 
 ==================== DEMO LOSE GAME 4 =============================
 ;;;;; In this game, you need at least 2 edible items to escape alive
-[51]> (load "project.lisp")
-;; Loading file project.lisp ...
+[51]> (load "EscapeTheDungeon.lisp")
+;; Loading file EscapeTheDungeon.lisp ...
 WARNING: (DEFCONSTANT +ID+ "Jasmine Ishigami and Alyssa Higuchi") redefines the constant +ID+. Its old value was visually similar though. Set
          *SUPPRESS-SIMILAR-CONSTANT-REDEFINITION-WARNING* to avoid this warning.
 ;;  Loading file add_actions.lisp ...
@@ -166,6 +273,7 @@ You had left your house early this morning looking to buy some food from the mar
   having others touch his garden.  He was so upset, he threw you in his dungeons to rot away!
 
   You goal is to escape the dungeon!  If you need help along the way, just type 'help?'.
+  If you want more help with commands type 'help more'.
 
 look
 You are trapped in the dungeon. You need to find a way to escape. There is a torch in the corner. There is a stairway going upstairs from here -
@@ -221,8 +329,8 @@ You do not have anything to carry your items. You lost everything while you were
 
 
 ===================  DEMO WIN GAME ================================
-[49]> (load "project.lisp")
-;; Loading file project.lisp ...
+[49]> (load "EscapeTheDungeon.lisp")
+;; Loading file EscapeTheDungeon.lisp ...
 WARNING: (DEFCONSTANT +ID+ "Jasmine Ishigami and Alyssa Higuchi") redefines the constant +ID+. Its old value was visually similar though. Set
          *SUPPRESS-SIMILAR-CONSTANT-REDEFINITION-WARNING* to avoid this warning.
 ;;  Loading file add_actions.lisp ...
@@ -239,6 +347,7 @@ You had left your house early this morning looking to buy some food from the mar
   having others touch his garden.  He was so upset, he threw you in his dungeons to rot away!
 
   You goal is to escape the dungeon!  If you need help along the way, just type 'help?'.
+  If you want more help with commands type 'help more'.
 
 look
 You are trapped in the dungeon. You need to find a way to escape. There is a torch in the corner. There is a stairway going upstairs from here -

@@ -29,14 +29,15 @@
 (setq object-locations '()) 
 (setq location 'dungeon)                ; the starting location is the dungeon
 (setq action-commands '())              ; all the action commands, including their subj obj and loc
-(setq all-commands '(look walk pickup inventory have run help?))
-(setq allowed-commands '(look walk pickup inventory have run help?))
+(setq all-commands '(look walk pickup inventory have run help? help))
+(setq allowed-commands '(look walk pickup inventory have run help? help))
 (setq intro "You had left your house early this morning looking to buy some food from the market.
   Along the way, you say some lovely flowers by a castle.  You went over and started plucking some
   to bring home.  Unfortunately, this garden belonged to a Duke and he seemed very upset about 
   having others touch his garden.  He was so upset, he threw you in his dungeons to rot away!
 
-  You goal is to escape the dungeon!  If you need help along the way, just type 'help?'.")
+  You goal is to escape the dungeon!  If you need help along the way, just type 'help?'.
+  If you want more help with commands type 'help more'.")
 
 ;;;=============================================================================
 ;;; A function that prints out the names, ICS course number, and assignment number.
@@ -109,8 +110,14 @@
 
 
 ;;;;==============================================================
-
+;;; The check-command function looks at the user's inventory and 
+;;; location, and then over writes the 'allowed-commands' to have
+;;; only commands that the user may user at that time.
 (defun check-commands()
+    "The check-command function looks at the user's inventory and 
+    location, and then over writes the 'allowed-commands' to have
+    only commands that the user may user at that time.
+    This function takes no parameters."
   (setq allowed-commands (copy-list all-commands))
   (loop for x in action-commands
     do (if (or (not (equal location (car(cdddr x)))) (not(have (cadr x))) )
@@ -126,6 +133,9 @@
     (cond (next (setf location (third next)) (check-commands) (look) )
           (t '(You cannot go that way.)))))
 
+
+;;;========================================================
+;;; Enables defspels to be used.
 (defmacro defspel (&rest rest) 
   `(defmacro ,@rest))
 
@@ -135,7 +145,7 @@
 (defspel walk (direction)
   "The walk SPEL allows movement from one location on the map to another.
    This SPEL takes a direction as a parameter"
-  `(walk-direction ',direction))
+  `(walk-direction ,direction))
 
 ;;;;======================================================
 ;;;; The pickup-object function allows the user to pickup 
@@ -176,8 +186,23 @@
 ;;;;====================================================
 ;;;; A function that will let the user find out what commands they may use
 (defun help? ()
-    (append '(Current allowed commands- ) allowed-commands))
+  "This function will let the user find out what commands they may use at
+  a specific time."
+      (append '(Current allowed commands- ) allowed-commands) )
 
+
+(defun help(cmd)
+  (cond 
+    ((equal cmd 'more)
+      (format t "Provided Commands with Parameters: ~%~Tlook - no parameters (ie. 'look'~%~Twalk - a direction (ie. 'walk west')~%~Tpickup - an object (ie. 'pickup lighter')~%~Tinventory - no parameters (ie. 'inventory')~%~Thave - an object (ie. 'have lighter')~%~Trun - no parameters (ie. 'run')~%~Thelp? - no parameters (ie. 'help?')~%~Thelp - more or a command (ie. 'help more' or 'help dig')"))
+    ((eq cmd 'dig)
+      (format t "~Tdig - an object use to dig, a specification of what to dig"))
+    ((eq cmd 'combine)
+      (format t "~Tcombine - object1 to combine, object2 to combine"))
+    ((eq cmd 'fill-up)
+      (format t "~Tfill-up - an object to fill up, an place to use to fill the object up"))
+    ((eq cmd 'light)
+      (format t "~Tlight - an object to user to light with, an item to light"))))
 ;;;;============================================================
 ;;;; The game-action SPEL allows the user to do certain actions.
 (defspel game-action (command subj obj place &rest rest)
@@ -290,22 +315,27 @@
     ;; There exist path(s) so create them
     (t
       ;; No matter what loc1 -> loc2 will need to be created                                                               =
-      (nconc (assoc ',loc1 map) (list (list ',dirc1 ',path ',loc2))))                     ;just add another outgoing edge
+      (nconc (assoc ',loc1 map) (list (list ',dirc1 ',path ',loc2)))                     ;just add another outgoing edge
       ;; If it goes bothways, create a second path, loc2 -> loc1
       (if ',dirc2
-          (nconc (assoc ',loc2 map) (list (list ',dirc2 ',path ',loc1)))) ) )             ; If so, just add another outgoing edge
+          (nconc (assoc ',loc2 map) (list (list ',dirc2 ',path ',loc1)))) ) ) )             ; If so, just add another outgoing edge
 
 
 (defun new-action(command subj obj loc)
   (pushnew  (list command subj obj loc) action-commands))
 
+;;;================================================================
+;;; Loading all other Lisp files needed for Escape The Dungeon
 (load "add_actions.lisp")
 (load "add_locations.lisp")
 (load "add_objects.lisp")
 (load "add_paths.lisp")
+
+;;;================================================================
+;;; Printing out prompts for user
 (nconc all-commands (mapcar (lambda (n) (first n)) action-commands))
 (princ intro)
 (terpri)
 (help?)
 (terpri)
-;(game-repl)
+(game-repl)
