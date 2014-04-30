@@ -4,7 +4,9 @@
 
 (game-action combine cloth stick cave                                   ; conditions for the sack to be made
   (cond ((and (have 'stick)                                             ; checks that the stick is in the inventory
-              (setq sack-made 't))                                      ; sets the sack to made
+              (setq sack-made 't)                                       ; sets the sack to made
+              (push (list 'cloth 'gone) object-locations)
+              (push (list 'stick 'gone) object-locations))              ; gets rid of material used
           '(You now have a sack. You can use it to carry items.))       ; returns a message
           (t '(You cannot combine those.))))                            ; error message
 
@@ -35,3 +37,7 @@
           '(You lit up the torch. A guard saw a light down in the dungeon
             and gave you a warning. He then extinguished the torch.))
         (t '(You cannot light that.))))                                 ; error message
+
+;(new-action 'eat)
+
+;(game-action eat food nil nil)
