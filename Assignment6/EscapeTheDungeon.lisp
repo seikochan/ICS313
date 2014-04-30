@@ -27,6 +27,7 @@
 (setq objects '())                      ; creates objects for the game
 (setq map '())                          ; creates a map for the game 
 (setq object-locations '()) 
+(setq itemsHeld 0)                       ; variable to track items held (can only hold 2 items, 1 per hand!)
 (setq location 'dungeon)                ; the starting location is the dungeon
 (setq action-commands '())              ; all the action commands, including their subj obj and loc
 (setq all-commands '(look walk pickup inventory have run help? help))
@@ -160,11 +161,19 @@
 (defun pickup-object (object)
   "The pickup-object function allows the user to pickup an object in the current location.
    This function takes an object as a parameter"
-  (cond ((is-at object location object-locations)
+  (cond 
+    ((and (not sack-made) (eq itemsHeld 2))
+      '(You are already carrying 2 items. You cannot pickup anything else. You need something to hold more things.))
+    ((not sack-made)
+      (incf itemsHeld)
+      (push (list object 'body) object-locations)
+      (check-commands)
+      `(You are now carrying the ,object))
+    ((is-at object location object-locations)
          (push (list object 'body) object-locations)
          (check-commands)
          `(You are now carrying the ,object))
-         (t '(You cannot get that.))))
+    (t '(You cannot get that.))))
 
 ;;;;=====================================================
 ;;;; The pickup SPEL allows the user to pick up an object
