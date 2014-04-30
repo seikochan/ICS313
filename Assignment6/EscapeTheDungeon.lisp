@@ -130,8 +130,15 @@
   "The walk-direction function allows movement from one location on the map to another.
    This function takes a direction as a parameter"
   (let ((next (assoc direction (cddr (assoc location map)))))
-    (cond (next (setf location (third next)) (check-commands) (look) )
-          (t '(You cannot go that way.)))))
+    (cond 
+      (next (setf location (third next)) (check-commands) (look) )
+      (t '(You cannot go that way.)))
+    (cond
+      ((eq location 'ballroom)
+          (check-commands)
+          (game-print (look))
+          (quit))
+      (t (look)))))
 
 
 ;;;========================================================
@@ -194,7 +201,7 @@
 (defun help(cmd)
   (cond 
     ((equal cmd 'more)
-      (format t "Provided Commands with Parameters: ~%~Tlook - no parameters (ie. 'look'~%~Twalk - a direction (ie. 'walk west')~%~Tpickup - an object (ie. 'pickup lighter')~%~Tinventory - no parameters (ie. 'inventory')~%~Thave - an object (ie. 'have lighter')~%~Trun - no parameters (ie. 'run')~%~Thelp? - no parameters (ie. 'help?')~%~Thelp - more or a command (ie. 'help more' or 'help dig')"))
+      (format t "Provided Commands with Parameters: ~%~Tlook - no parameters (ie. 'look')~%~Twalk - a direction (ie. 'walk west')~%~Tpickup - an object (ie. 'pickup lighter')~%~Tinventory - no parameters (ie. 'inventory')~%~Thave - an object (ie. 'have lighter')~%~Trun - no parameters (ie. 'run')~%~Thelp? - no parameters (ie. 'help?')~%~Thelp - more or a command (ie. 'help more' or 'help dig')"))
     ((eq cmd 'dig)
       (format t "~Tdig - an object use to dig, a specification of what to dig"))
     ((eq cmd 'combine)
@@ -202,7 +209,7 @@
     ((eq cmd 'fill-up)
       (format t "~Tfill-up - an object to fill up, an place to use to fill the object up"))
     ((eq cmd 'light)
-      (format t "~Tlight - an object to user to light with, an item to light"))))
+      (format t "~Tlight - an object to use to light with, an item to light"))))
 ;;;;============================================================
 ;;;; The game-action SPEL allows the user to do certain actions.
 (defspel game-action (command subj obj place &rest rest)
@@ -227,14 +234,17 @@
               (eq sack-made 't)                                                  ; checks that the sack is made
               (or (have 'fruits) (have 'turkey-dinner))                          ; checks that there is at least one food item in the inventory
               (eq location 'outside))                                            ; checks that the user is outside
-          '(Congratulations! You have escaped!))                                 ; message
+          (game-print '(Congratulations! You have escaped!))                                  ; message
+          (quit))                                 
         ((not (eq location 'outside))                                            ; location is not outside
           '(You cannot escape yet.))                                             ; cannot escape
         ((not (eq sack-made 't))                                                 ; the sack has not been made
-          '(You do not have anything to carry your items. You lost everything    ; message
+          (game-print '(You do not have anything to carry your items. You lost everything    ; message
             while you were running away. You did not survive for very long.))
-        (t '(You escaped but you did not last long. You need to carry food       ; message
-             and water to survive you know.))))
+          (quit))
+        (t (game-print '(You escaped but you did not last long. You need to carry food       ; message
+             and water to survive you know.))
+            (quit))))
 
 ;;;==========================================================================
 ;;;These functions are used to create the "game-repl" mode
