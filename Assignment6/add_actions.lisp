@@ -16,8 +16,9 @@
 
 (game-action fill-up bottle pond garden                                 ; conditions to fill up the bottle
   (cond ((and (have 'bottle)                                            ; checks that the bottle is in the inventory
-              (setq bottle-filled 't))                                  ; sets the bottle to filled
-         '(You now have a bottle full of water.))                       ; returns a message
+          (setq bottle-filled 't))                                  ; sets the bottle to filled
+          (push 'water consumables)
+          '(You now have a bottle full of water.))                       ; returns a message
         (t '(You cannot fill like that.))))                             ; error message
 
 (new-action 'dig 'shovel 'hole 'cave) 
@@ -37,7 +38,3 @@
           '(You lit up the torch. A guard saw a light down in the dungeon
             and gave you a warning. He then extinguished the torch.))
         (t '(You cannot light that.))))                                 ; error message
-
-;(new-action 'eat)
-
-;(game-action eat food nil nil)

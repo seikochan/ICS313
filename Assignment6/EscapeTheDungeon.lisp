@@ -25,12 +25,14 @@
 
 
 (setq objects '())                      ; creates objects for the game
+(setq consumables '())
 (setq map '())                          ; creates a map for the game 
 (setq object-locations '()) 
 (setq itemsHeld 0)                      ; variable to track items held (can only hold 2 items, 1 per hand!)
+(setq consumablesHeld 0)
 (setq location 'dungeon)                ; the starting location is the dungeon
 (setq action-commands '())              ; all the action commands, including their subj obj and loc
-(setq all-commands '(look walk pickup drop inventory have run help? help))
+(setq all-commands '(look walk pickup drop inventory have consume run help? help))
 (setq allowed-commands '(look walk pickup inventory have run help? help))
 (setq intro "You had left your house early this morning looking to buy some food from the market.
   Along the way, you say some lovely flowers by a castle.  You went over and started plucking some
@@ -123,6 +125,8 @@
   (loop for x in action-commands
     do (if (or (not (equal location (car(cdddr x)))) (not(have (cadr x))) )
         (delete (car x) allowed-commands)))
+  (if (equal consumablesHeld 0)
+    (delete 'consume allowed-commands))
   (if (not (inventory))
     (delete 'drop allowed-commands)))
 
@@ -167,14 +171,18 @@
     ((and (not sack-made) (eq itemsHeld 2))
       '(You are already carrying 2 items. You cannot pickup anything else. You need something to hold more things.))
     ((not sack-made)
+      (if (member object consumables)
+        (incf consumablesHeld))
       (incf itemsHeld)
       (push (list object 'body) object-locations)
       (check-commands)
       `(You are now carrying the ,object))
     ((is-at object location object-locations)
-         (push (list object 'body) object-locations)
-         (check-commands)
-         `(You are now carrying the ,object))
+      (if (member object consumables)
+        (incf consumablesHeld))
+      (push (list object 'body) object-locations)
+      (check-commands)
+      `(You are now carrying the ,object))
     (t '(You cannot get that.))))
 
 ;;;;=====================================================
@@ -192,8 +200,11 @@
   "The drop-object function allows user to drop an item from inventory to current location."
   (cond 
     ((have object)
+      (if (member object consumables)
+        (decf consumablesHeld))
       (push (list object location) object-locations)
       (decf itemsHeld)
+      (check-commands)  
       `(You have dropped the ,object))
     (t `(You do not have ,object to drop.))))
 
@@ -220,6 +231,19 @@
   "The have function tells the user whether or not they have a certain object.
    It takes an object as a parameter"
   (member object (inventory)))
+
+;;;;====================================================
+;;;; The consume function will allow user to 'eat' consumable objects.
+(defun consume (object)
+  "The consume function will allow user to 'eat' consumable objects."
+  (cond
+    ((and (have object) (member object consumables))
+      (push (list object 'consumed) object-locations)
+      `(You have consumed ,object you feel more refreshed and energetic.))
+    ((not (member object consumambles))
+      `(You cannot consume the ,object.))
+    (t 
+      `(You cannot comsume like that.))))
 
 ;;;;====================================================
 ;;;; A function that will let the user find out what commands they may use
