@@ -27,10 +27,10 @@
 (setq objects '())                      ; creates objects for the game
 (setq map '())                          ; creates a map for the game 
 (setq object-locations '()) 
-(setq itemsHeld 0)                       ; variable to track items held (can only hold 2 items, 1 per hand!)
+(setq itemsHeld 0)                      ; variable to track items held (can only hold 2 items, 1 per hand!)
 (setq location 'dungeon)                ; the starting location is the dungeon
 (setq action-commands '())              ; all the action commands, including their subj obj and loc
-(setq all-commands '(look walk pickup inventory have run help? help))
+(setq all-commands '(look walk pickup drop inventory have run help? help))
 (setq allowed-commands '(look walk pickup inventory have run help? help))
 (setq intro "You had left your house early this morning looking to buy some food from the market.
   Along the way, you say some lovely flowers by a castle.  You went over and started plucking some
@@ -122,7 +122,9 @@
   (setq allowed-commands (copy-list all-commands))
   (loop for x in action-commands
     do (if (or (not (equal location (car(cdddr x)))) (not(have (cadr x))) )
-        (delete (car x) allowed-commands))))
+        (delete (car x) allowed-commands)))
+  (if (not (inventory))
+    (delete 'drop allowed-commands)))
 
 ;;;;==============================================================
 ;;;; The walk-direction function allows movement from one location
@@ -182,6 +184,26 @@
   "The pickup SPEL allows the user to pick up an object in the current location.
    This SPEL takes an object as a parameter"
   `(pickup-object ,object))
+
+;;;;=====================================================
+;;;; The drop-object function allows user to drop an 
+;;;; item from inventory to current location.
+(defun drop-object (object)
+  "The drop-object function allows user to drop an item from inventory to current location."
+  (cond 
+    ((have object)
+      (push (list object location) object-locations)
+      (decf itemsHeld)
+      `(You have dropped the ,object))
+    (t `(You do not have ,object to drop.))))
+
+;;;;=====================================================
+;;;; The drop SPEL allows the user to drop an object
+;;;; in the current location.
+(defspel drop (object)
+  "The drop SPEL allows the user to drop an object in the current location.
+   This SPEL takes an object as a parameter"
+  `(drop-object ,object))
 
 ;;;;=======================================================
 ;;;; The inventory function displays the current inventory.
