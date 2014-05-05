@@ -38,3 +38,15 @@
           '(You lit up the torch. A guard saw a light down in the dungeon
             and gave you a warning. He then extinguished the torch.))
         (t '(You cannot light that.))))                                 ; error message
+
+(setq guard-hit nil)
+
+(new-action 'hit 'shovel 'guard 'ballroom)
+
+(game-action hit shovel guard ballroom                                ; conditions to hit guard
+  (cond ((have 'shovel)                                                ; checks that the lighter is in the inventory 
+          (setq guard-hit 't) 
+          '(You panic and run up behind the guard and hit him in the head
+            with all your might.  He falls to the ground unconscious. Thankfully
+            he looks okay although he will probably awaken with a huge headache.))
+        (t '(You cannot hit like that.))))    

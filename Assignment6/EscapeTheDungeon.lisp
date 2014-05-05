@@ -32,7 +32,7 @@
 (setq consumablesHeld 0)
 (setq location 'dungeon)                ; the starting location is the dungeon
 (setq action-commands '())              ; all the action commands, including their subj obj and loc
-(setq all-commands '(look walk pickup drop inventory have consume run help? help))
+(setq all-commands '(look walk pickup drop inventory have consume hit run help? help))
 (setq allowed-commands '(look walk pickup inventory have run help? help))
 (setq intro "You had left your house early this morning looking to buy some food from the market.
   Along the way, you say some lovely flowers by a castle.  You went over and started plucking some
@@ -128,7 +128,9 @@
   (if (equal consumablesHeld 0)
     (delete 'consume allowed-commands))
   (if (not (inventory))
-    (delete 'drop allowed-commands)))
+    (delete 'drop allowed-commands))
+  (if (or (not (member 'shovel (inventory))) (not (eq location 'ballroom)) guard-hit )
+    (delete 'hit allowed-commands)))
 
 ;;;;==============================================================
 ;;;; The walk-direction function allows movement from one location
@@ -138,10 +140,13 @@
    This function takes a direction as a parameter"
   (let ((next (assoc direction (cddr (assoc location map)))))
     (cond 
+      ((and (eq location 'ballroomB) (not guard-hit))
+        (princ "The guard hears you opening the door and spots you. You are a gonner")
+        (quit))
       (next (setf location (third next)) (check-commands) (look) )
       (t '(You cannot go that way.)))
     (cond
-      ((eq location 'ballroom)
+      ((and (eq location 'ballroom) (eq direction 'upstairs))
           (check-commands)
           (game-print (look))
           (quit))
@@ -168,9 +173,9 @@
   "The pickup-object function allows the user to pickup an object in the current location.
    This function takes an object as a parameter"
   (cond 
-    ((and (not sack-made) (eq itemsHeld 2))
+    ((and (not sack-made) (eq itemsHeld 2) (is-at object location object-locations))
       '(You are already carrying 2 items. You cannot pickup anything else. You need something to hold more things.))
-    ((not sack-made)
+    ((and (not sack-made) (is-at object location object-locations) )
       (if (member object consumables)
         (incf consumablesHeld))
       (incf itemsHeld)
