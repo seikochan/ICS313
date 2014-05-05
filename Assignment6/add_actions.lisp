@@ -41,9 +41,9 @@
 
 (setq guard-hit nil)
 
-(new-action 'hit 'shovel 'guard 'ballroom)
+(new-action 'hit 'shovel 'guard 'ballroomB)
 
-(game-action hit shovel guard ballroom                                ; conditions to hit guard
+(game-action hit shovel guard ballroomB                                ; conditions to hit guard
   (cond ((have 'shovel)                                                ; checks that the lighter is in the inventory 
           (setq guard-hit 't) 
           '(You panic and run up behind the guard and hit him in the head

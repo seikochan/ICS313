@@ -129,7 +129,7 @@
     (delete 'consume allowed-commands))
   (if (not (inventory))
     (delete 'drop allowed-commands))
-  (if (or (not (member 'shovel (inventory))) (not (eq location 'ballroom)) guard-hit )
+  (if (or (not (member 'shovel (inventory))) (not (eq location 'ballroomB)) guard-hit )
     (delete 'hit allowed-commands)))
 
 ;;;;==============================================================
@@ -292,7 +292,7 @@
    This function takes no parameters"
   (cond ((and (eq bottle-filled 't)                                              ; checks that the bottle is filled
               (eq sack-made 't)                                                  ; checks that the sack is made
-              (or (have 'fruits) (have 'turkey-dinner))                          ; checks that there is at least one food item in the inventory
+              (> consumablesHeld 0)                                              ; checks that there is at least one food item in the inventory
               (eq location 'outside))                                            ; checks that the user is outside
           (game-print '(Congratulations! You have escaped!))                                  ; message
           (quit))                                 
